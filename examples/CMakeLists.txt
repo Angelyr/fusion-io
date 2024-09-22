@@ -19,6 +19,8 @@ target_link_libraries(example_fortran PRIVATE fusionio::fusionio)
 add_executable(example_push example_push.f90)
 target_link_libraries(example_push PRIVATE fusionio::push)
 
+add_executable(example_pcms example_pcms.cpp)
+target_link_libraries(example_pcms PRIVATE fusionio::fusionio pcms::core)
 
 add_test(cpp_example_m3dc1 ./example m3dc1)
 add_test(cpp_example_geqdsk ./example geqdsk)

@@ -7,6 +7,10 @@ include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 pkg_check_modules(HDF5 REQUIRED IMPORTED_TARGET hdf5)
 
+set(CMAKE_CXX_STANDARD 17)
+find_package(pcms)
+find_package(perfstubs REQUIRED)
+
 option(FUSIONIO_ENABLE_PYTHON "Enable Python" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
