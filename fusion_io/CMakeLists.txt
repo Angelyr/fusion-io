@@ -23,6 +23,7 @@ set(FUSIONIO_HEADERS
         mars_field.h
         mars_source.h
         options.h
+        pcms_lib.h
 )
 
 add_library(fusionio_fusionio
