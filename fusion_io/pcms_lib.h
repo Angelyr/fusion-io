@@ -11,6 +11,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+namespace {
+  template <typename T>
+  struct IndirectionLevel {
+      static const int value = 0;
+  };
+  template <typename T>
+  struct IndirectionLevel<T*> {
+      static const int value = IndirectionLevel<T>::value + 1;
+  };
+}
+
 namespace fusion_io
 {
   class Library
@@ -37,10 +49,17 @@ namespace fusion_io
     public:
       using value_type = std::remove_pointer_t<std::remove_pointer_t<fieldtype>>;
       fieldtype* field;
+      int* size;
 
       FusionFieldAdapter(fieldtype* fieldIn) {
         field = fieldIn;
       }
+
+      template <typename T1, typename T2>
+      int Serialize(T1, T2) const noexcept { return 0;}
+
+      template <typename T1, typename T2>
+      void Deserialize(T1, T2) const noexcept {}
 
       [[nodiscard]] std::vector<pcms::GO> GetGids() const { return {}; }
 
@@ -48,16 +67,39 @@ namespace fusion_io
         return {};
       }
 
-      template <typename T1, typename T2>
-      int Serialize(T1, T2) const noexcept { return 0;}
+      template < typename = typename std::enable_if< IndirectionLevel<fieldtype>::value==1 > >
+      int Serialize(pcms::ScalarArrayView<fieldtype, pcms::HostMemorySpace> buffer,
+                    pcms::ScalarArrayView<const pcms::LO, pcms::HostMemorySpace> permutation) const
+      {
+        if (buffer.size() > 0) {
+          for (pcms::LO i = 0; i < *size; i++) {
+            buffer[i] = field[permutation[i]];
+          }
+        }
+        return *size;
+      }
 
-      // function so that call to Serialize({},{}) works.
-      int Serialize(int, int) const noexcept { return 0; }
+      template < typename = typename std::enable_if< IndirectionLevel<fieldtype>::value==1 > >
+      void Deserialize(pcms::ScalarArrayView<const fieldtype, pcms::HostMemorySpace> buffer,
+                       pcms::ScalarArrayView<const pcms::LO, pcms::HostMemorySpace> permutation) const
+      {
+        REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
+        for (size_t i = 0; i < buffer.size(); ++i) {
+          field[permutation[i]] = buffer[i];
+        }
+      }
 
-      template <typename T1, typename T2>
-      void Deserialize(T1, T2) const noexcept {}
   };
 
+  Omega_h::HostRead<double> evaluate(fio_field* field, double* x, double* values) {
+    field->eval(x, values);
+    Omega_h::HostWrite<double> host_write(field->dimension());
+    for (int i=0; i<field->dimension(); i++) {
+      host_write[i] = values[i];
+    }
+    Omega_h::HostRead<double> host_read(host_write.write());
+    return host_read;
+  }
 
   int fio_open_source(fio_source** src, const int type, const char* filename, Library lib) {
     int ierr;
