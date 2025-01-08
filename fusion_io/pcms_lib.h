@@ -49,10 +49,14 @@ namespace fusion_io
     public:
       using value_type = std::remove_pointer_t<std::remove_pointer_t<fieldtype>>;
       fieldtype* field;
-      int* size;
+      int size;
+      std::vector<pcms::GO> gids_;
 
-      FusionFieldAdapter(fieldtype* fieldIn) {
+      FusionFieldAdapter(fieldtype* fieldIn, int sizeIn=0) {
         field = fieldIn;
+        size = sizeIn;
+        gids_ = std::vector<pcms::GO>(size);
+        std::iota(gids_.begin(), gids_.end(), static_cast<pcms::GO>(0));
       }
 
       template <typename T1, typename T2>
@@ -61,7 +65,9 @@ namespace fusion_io
       template <typename T1, typename T2>
       void Deserialize(T1, T2) const noexcept {}
 
-      [[nodiscard]] std::vector<pcms::GO> GetGids() const { return {}; }
+      [[nodiscard]] std::vector<pcms::GO> GetGids() const { 
+        return gids_;
+      }
 
       [[nodiscard]] pcms::ReversePartitionMap GetReversePartitionMap(const redev::Partition& partition) const {
         return {};
@@ -72,11 +78,11 @@ namespace fusion_io
                     pcms::ScalarArrayView<const pcms::LO, pcms::HostMemorySpace> permutation) const
       {
         if (buffer.size() > 0) {
-          for (pcms::LO i = 0; i < *size; i++) {
+          for (pcms::LO i = 0; i < size; i++) {
             buffer[i] = field[permutation[i]];
           }
         }
-        return *size;
+        return size;
       }
 
       template < typename = typename std::enable_if< IndirectionLevel<fieldtype>::value==1 > >
