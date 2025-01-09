@@ -24,6 +24,7 @@ set(FUSIONIO_HEADERS
         mars_source.h
         options.h
         pcms_lib.h
+        pcms_source.h
 )
 
 add_library(fusionio_fusionio
@@ -58,7 +59,7 @@ target_include_directories(fusionio_fusionio PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:fusionio_fusionio,Fortran_MODULE_DIRECTORY>>
 )
-target_link_libraries(fusionio_fusionio PUBLIC fusionio_m3dc1)
+target_link_libraries(fusionio_fusionio PUBLIC fusionio_m3dc1 pcms::core)
 target_compile_definitions(fusionio_fusionio PRIVATE
         $<$<COMPILE_LANGUAGE:Fortran>: FORTRAN>)
 add_library(fusionio::fusionio ALIAS fusionio_fusionio)

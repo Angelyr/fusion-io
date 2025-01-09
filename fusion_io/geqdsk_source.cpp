@@ -245,3 +245,23 @@ int geqdsk_source::interpolate_psi(const double r0, const double z0,
 
   return FIO_SUCCESS;
 }
+
+using fusion_io::FusionFieldAdapter;
+void geqdsk_source::add_pcms_fields(fusion_io::Library lib) {
+  lib.client->AddField("rmaxis", FusionFieldAdapter(&rmaxis));
+  lib.client->AddField("zmaxis", FusionFieldAdapter(&zmaxis));
+  lib.client->AddField("nw", FusionFieldAdapter(&nw));
+  lib.client->AddField("nh", FusionFieldAdapter(&nh));
+  lib.client->AddField("dx", FusionFieldAdapter(&dx));
+  lib.client->AddField("dz", FusionFieldAdapter(&dz));
+  lib.client->AddField("rleft", FusionFieldAdapter(&rleft));
+  lib.client->AddField("zmid", FusionFieldAdapter(&zmid));
+  lib.client->AddField("zbottom", FusionFieldAdapter(&zbottom));
+  lib.client->AddField("simag", FusionFieldAdapter(&simag));
+  lib.client->AddField("sibry", FusionFieldAdapter(&sibry));
+  lib.client->AddField("psi", FusionFieldAdapter(psi));
+  lib.client->AddField("psirz", FusionFieldAdapter(psirz));
+  lib.client->AddField("fpol", FusionFieldAdapter(fpol));
+  lib.client->AddField("ffprime", FusionFieldAdapter(ffprime));
+  lib.client->AddField("press", FusionFieldAdapter(press));
+}

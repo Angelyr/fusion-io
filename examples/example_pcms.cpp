@@ -1,5 +1,6 @@
 #include <fusion_io.h>
 #include "pcms_lib.h"
+#include "pcms_source.h"
 
 int main(int argc, char** argv)
 {

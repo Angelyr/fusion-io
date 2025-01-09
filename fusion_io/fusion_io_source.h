@@ -5,6 +5,7 @@
 #include "fusion_io_series.h"
 #include "fusion_io_field.h"
 #include "options.h"
+#include "pcms_lib.h"
 
 #include <vector>
 #include <math.h>
@@ -54,6 +55,7 @@ class fio_source {
     *t = 0.;
     return FIO_UNSUPPORTED;
   }
+  virtual void add_pcms_fields(fusion_io::Library lib) {}
 };
 
 #endif 

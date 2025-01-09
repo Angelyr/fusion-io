@@ -9,6 +9,7 @@ pkg_check_modules(HDF5 REQUIRED IMPORTED_TARGET hdf5)
 
 set(CMAKE_CXX_STANDARD 17)
 find_package(pcms)
+set_property(TARGET Omega_h::omega_h PROPERTY INTERFACE_COMPILE_OPTIONS "")
 find_package(perfstubs REQUIRED)
 
 option(FUSIONIO_ENABLE_PYTHON "Enable Python" ON)

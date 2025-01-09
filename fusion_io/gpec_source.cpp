@@ -288,3 +288,33 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
 
   return FIO_SUCCESS;
 }
+
+using fusion_io::FusionFieldAdapter;
+void gpec_source::add_pcms_fields(fusion_io::Library lib) {
+  lib.client->AddField("b0_ntor", FusionFieldAdapter(&b0.ntor));
+  lib.client->AddField("b0_nr", FusionFieldAdapter(&b0.nr));
+  lib.client->AddField("b0_nz", FusionFieldAdapter(&b0.nz));
+  lib.client->AddField("b0_n_comp", FusionFieldAdapter(&b0.n_comp));
+  lib.client->AddField("b0_r", FusionFieldAdapter(b0.r));
+  lib.client->AddField("b0_z", FusionFieldAdapter(b0.z));
+  lib.client->AddField("b0_v_real", FusionFieldAdapter(b0.v_real));
+  lib.client->AddField("b0_v_imag", FusionFieldAdapter(b0.v_imag));
+
+  lib.client->AddField("b1_ntor", FusionFieldAdapter(&b1.ntor));
+  lib.client->AddField("b1_nr", FusionFieldAdapter(&b1.nr));
+  lib.client->AddField("b1_nz", FusionFieldAdapter(&b1.nz));
+  lib.client->AddField("b1_n_comp", FusionFieldAdapter(&b1.n_comp));
+  lib.client->AddField("b1_r", FusionFieldAdapter(b1.r));
+  lib.client->AddField("b1_z", FusionFieldAdapter(b1.z));
+  lib.client->AddField("b1_v_real", FusionFieldAdapter(b1.v_real));
+  lib.client->AddField("b1_v_imag", FusionFieldAdapter(b1.v_imag));
+
+  lib.client->AddField("bx_ntor", FusionFieldAdapter(&bx.ntor));
+  lib.client->AddField("bx_nr", FusionFieldAdapter(&bx.nr));
+  lib.client->AddField("bx_nz", FusionFieldAdapter(&bx.nz));
+  lib.client->AddField("bx_n_comp", FusionFieldAdapter(&bx.n_comp));
+  lib.client->AddField("bx_r", FusionFieldAdapter(bx.r));
+  lib.client->AddField("bx_z", FusionFieldAdapter(bx.z));
+  lib.client->AddField("bx_v_real", FusionFieldAdapter(bx.v_real));
+  lib.client->AddField("bx_v_imag", FusionFieldAdapter(bx.v_imag));
+}

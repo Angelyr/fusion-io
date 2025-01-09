@@ -320,3 +320,78 @@ int mars_source::get_available_fields(fio_field_list* fields) const
 
   return FIO_SUCCESS;
 }
+
+using fusion_io::FusionFieldAdapter;
+void mars_source::add_pcms_fields(fusion_io::Library lib) {
+  lib.client->AddField("nrp1", FusionFieldAdapter(&nrp1));
+  lib.client->AddField("nchi", FusionFieldAdapter(&nchi));
+  lib.client->AddField("aspect", FusionFieldAdapter(&aspect));
+  lib.client->AddField("r0exp", FusionFieldAdapter(&r0exp));
+  lib.client->AddField("b0exp", FusionFieldAdapter(&b0exp));
+  lib.client->AddField("bfac", FusionFieldAdapter(&bfac));
+  lib.client->AddField("vfac", FusionFieldAdapter(&vfac));
+  lib.client->AddField("psiiso", FusionFieldAdapter(psiiso));
+
+  lib.client->AddField("eqdata_cse", FusionFieldAdapter(eqdata->cse));
+  lib.client->AddField("eqdata_peq", FusionFieldAdapter(eqdata->peq));
+  lib.client->AddField("eqdata_t", FusionFieldAdapter(eqdata->t));
+  lib.client->AddField("eqdata_ttp", FusionFieldAdapter(eqdata->ttp));
+  lib.client->AddField("eqdata_ppeq", FusionFieldAdapter(eqdata->ppeq));
+  lib.client->AddField("eqdata_dpsids", FusionFieldAdapter(eqdata->dpsids));
+  lib.client->AddField("eqdata_req", FusionFieldAdapter(eqdata->req));
+  lib.client->AddField("eqdata_zeq", FusionFieldAdapter(eqdata->zeq));
+  lib.client->AddField("eqdata_rja", FusionFieldAdapter(eqdata->rja));
+  lib.client->AddField("eqdata_g11l", FusionFieldAdapter(eqdata->g11l));
+  lib.client->AddField("eqdata_g22l", FusionFieldAdapter(eqdata->g22l));
+  lib.client->AddField("eqdata_g33l", FusionFieldAdapter(eqdata->g33l));
+  lib.client->AddField("eqdata_g12l", FusionFieldAdapter(eqdata->g12l));
+  lib.client->AddField("eqdata_rdcdz", FusionFieldAdapter(eqdata->rdcdz));
+  lib.client->AddField("eqdata_rdsdz", FusionFieldAdapter(eqdata->rdsdz));
+  lib.client->AddField("eqdata_rbz", FusionFieldAdapter(eqdata->rbz));
+  lib.client->AddField("eqdata_tp", FusionFieldAdapter(eqdata->tp));
+
+  lib.client->AddField("eqdatam_cse", FusionFieldAdapter(eqdatam->cse));
+  lib.client->AddField("eqdatam_peq", FusionFieldAdapter(eqdatam->peq));
+  lib.client->AddField("eqdatam_t", FusionFieldAdapter(eqdatam->t));
+  lib.client->AddField("eqdatam_ttp", FusionFieldAdapter(eqdatam->ttp));
+  lib.client->AddField("eqdatam_ppeq", FusionFieldAdapter(eqdatam->ppeq));
+  lib.client->AddField("eqdatam_dpsids", FusionFieldAdapter(eqdatam->dpsids));
+  lib.client->AddField("eqdatam_req", FusionFieldAdapter(eqdatam->req));
+  lib.client->AddField("eqdatam_zeq", FusionFieldAdapter(eqdatam->zeq));
+  lib.client->AddField("eqdatam_rja", FusionFieldAdapter(eqdatam->rja));
+  lib.client->AddField("eqdatam_g11l", FusionFieldAdapter(eqdatam->g11l));
+  lib.client->AddField("eqdatam_g22l", FusionFieldAdapter(eqdatam->g22l));
+  lib.client->AddField("eqdatam_g33l", FusionFieldAdapter(eqdatam->g33l));
+  lib.client->AddField("eqdatam_g12l", FusionFieldAdapter(eqdatam->g12l));
+  lib.client->AddField("eqdatam_rdcdz", FusionFieldAdapter(eqdatam->rdcdz));
+  lib.client->AddField("eqdatam_rdsdz", FusionFieldAdapter(eqdatam->rdsdz));
+  lib.client->AddField("eqdatam_rbz", FusionFieldAdapter(eqdatam->rbz));
+  lib.client->AddField("eqdatam_tp", FusionFieldAdapter(eqdatam->tp));
+
+  lib.client->AddField("bplasma_maxm", FusionFieldAdapter(&bplasma->maxm));
+  lib.client->AddField("bplasma_nrp", FusionFieldAdapter(&bplasma->nrp));
+  lib.client->AddField("bplasma_dpsids", FusionFieldAdapter(bplasma->dpsids));
+  lib.client->AddField("bplasma_t", FusionFieldAdapter(bplasma->t));
+  lib.client->AddField("bplasma_mnum_r", FusionFieldAdapter(bplasma->mnum_r));
+  lib.client->AddField("bplasma_mnum_i", FusionFieldAdapter(bplasma->mnum_i));
+  lib.client->AddField("bplasma_val_r", FusionFieldAdapter(bplasma->val_r));
+  lib.client->AddField("bplasma_val_i", FusionFieldAdapter(bplasma->val_i));
+
+  lib.client->AddField("vplasma_maxm", FusionFieldAdapter(&vplasma->maxm));
+  lib.client->AddField("vplasma_nrp", FusionFieldAdapter(&vplasma->nrp));
+  lib.client->AddField("vplasma_dpsids", FusionFieldAdapter(vplasma->dpsids));
+  lib.client->AddField("vplasma_t", FusionFieldAdapter(vplasma->t));
+  lib.client->AddField("vplasma_mnum_r", FusionFieldAdapter(vplasma->mnum_r));
+  lib.client->AddField("vplasma_mnum_i", FusionFieldAdapter(vplasma->mnum_i));
+  lib.client->AddField("vplasma_val_r", FusionFieldAdapter(vplasma->val_r));
+  lib.client->AddField("vplasma_val_i", FusionFieldAdapter(vplasma->val_i));
+
+  lib.client->AddField("bplasma_maxm", FusionFieldAdapter(&bplasma->maxm));
+  lib.client->AddField("bplasma_nrp", FusionFieldAdapter(&bplasma->nrp));
+  lib.client->AddField("bplasma_dpsids", FusionFieldAdapter(bplasma->dpsids));
+  lib.client->AddField("bplasma_t", FusionFieldAdapter(bplasma->t));
+  lib.client->AddField("bplasma_mnum_r", FusionFieldAdapter(bplasma->mnum_r));
+  lib.client->AddField("bplasma_mnum_i", FusionFieldAdapter(bplasma->mnum_i));
+  lib.client->AddField("bplasma_val_r", FusionFieldAdapter(bplasma->val_r));
+  lib.client->AddField("bplasma_val_i", FusionFieldAdapter(bplasma->val_i));
+}

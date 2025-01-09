@@ -39,6 +39,8 @@ class geqdsk_source : public fio_source {
 
   int interpolate_psi(const double r0, const double z0, 
 		      double* psi) const;
+  
+  void add_pcms_fields(fusion_io::Library lib);
 };
 
 #endif

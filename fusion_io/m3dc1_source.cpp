@@ -369,3 +369,33 @@ int m3dc1_source::get_slice_time(const int slice, double* time)
   return FIO_SUCCESS;
 }
 
+using fusion_io::FusionFieldAdapter;
+void m3dc1_source::add_pcms_fields(fusion_io::Library lib) {
+  lib.client->AddField("bzero", FusionFieldAdapter(&bzero));
+  lib.client->AddField("rzero", FusionFieldAdapter(&rzero));
+  lib.client->AddField("z_ion", FusionFieldAdapter(&z_ion));
+  lib.client->AddField("ion_mass", FusionFieldAdapter(&ion_mass));
+  lib.client->AddField("period", FusionFieldAdapter(&period));
+  lib.client->AddField("n0", FusionFieldAdapter(&n0));
+  lib.client->AddField("L0", FusionFieldAdapter(&L0));
+  lib.client->AddField("B0", FusionFieldAdapter(&B0));
+  lib.client->AddField("p0", FusionFieldAdapter(&p0));
+  lib.client->AddField("t0", FusionFieldAdapter(&t0));
+  lib.client->AddField("v0", FusionFieldAdapter(&v0));
+  lib.client->AddField("J0", FusionFieldAdapter(&J0));
+  lib.client->AddField("Phi0", FusionFieldAdapter(&Phi0));
+  lib.client->AddField("temp0", FusionFieldAdapter(&temp0));
+  lib.client->AddField("eta0", FusionFieldAdapter(&eta0));
+  lib.client->AddField("linear", FusionFieldAdapter(&linear));
+  lib.client->AddField("eqsubtract", FusionFieldAdapter(&eqsubtract));
+  lib.client->AddField("extsubtract", FusionFieldAdapter(&extsubtract));
+  lib.client->AddField("icomplex", FusionFieldAdapter(&icomplex));
+  lib.client->AddField("i3d", FusionFieldAdapter(&i3d));
+  lib.client->AddField("version", FusionFieldAdapter(&version));
+  lib.client->AddField("itor", FusionFieldAdapter(&itor));
+  lib.client->AddField("ntor", FusionFieldAdapter(&ntor));
+  lib.client->AddField("ntime", FusionFieldAdapter(&ntime));
+  lib.client->AddField("ifprime", FusionFieldAdapter(&ifprime));
+  lib.client->AddField("kprad_z", FusionFieldAdapter(&kprad_z));
+  lib.client->AddField("numvar", FusionFieldAdapter(&numvar));
+}
