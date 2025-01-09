@@ -328,16 +328,16 @@ int gato_source::set_element_bounds()
   return FIO_SUCCESS;
 }
 
-using fusion_io::FusionFieldAdapter;
+using fusion_io::FieldAdapter;
 void gato_source::add_pcms_fields(fusion_io::Library lib) {
-  lib.client->AddField("psival", FusionFieldAdapter(psival));
-  lib.client->AddField("pressure", FusionFieldAdapter(pressure));
-  lib.client->AddField("ftor", FusionFieldAdapter(ftor));
-  lib.client->AddField("pprime", FusionFieldAdapter(pprime));
-  lib.client->AddField("ffprime", FusionFieldAdapter(ffprime));
-  lib.client->AddField("rcc", FusionFieldAdapter(rcc));
-  lib.client->AddField("zcc", FusionFieldAdapter(zcc));
-  lib.client->AddField("psimesh", FusionFieldAdapter(psimesh));
-  lib.client->AddField("dpsidr", FusionFieldAdapter(dpsidr));
-  lib.client->AddField("dpsidz", FusionFieldAdapter(dpsidz));
+  lib.client->AddField("psival", FieldAdapter(psival));
+  lib.client->AddField("pressure", FieldAdapter(pressure));
+  lib.client->AddField("ftor", FieldAdapter(ftor));
+  lib.client->AddField("pprime", FieldAdapter(pprime));
+  lib.client->AddField("ffprime", FieldAdapter(ffprime));
+  lib.client->AddField("rcc", FieldAdapter(rcc));
+  lib.client->AddField("zcc", FieldAdapter(zcc));
+  lib.client->AddField("psimesh", FieldAdapter(psimesh));
+  lib.client->AddField("dpsidr", FieldAdapter(dpsidr));
+  lib.client->AddField("dpsidz", FieldAdapter(dpsidz));
 }

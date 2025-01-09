@@ -246,22 +246,22 @@ int geqdsk_source::interpolate_psi(const double r0, const double z0,
   return FIO_SUCCESS;
 }
 
-using fusion_io::FusionFieldAdapter;
+using fusion_io::FieldAdapter;
 void geqdsk_source::add_pcms_fields(fusion_io::Library lib) {
-  lib.client->AddField("rmaxis", FusionFieldAdapter(&rmaxis));
-  lib.client->AddField("zmaxis", FusionFieldAdapter(&zmaxis));
-  lib.client->AddField("nw", FusionFieldAdapter(&nw));
-  lib.client->AddField("nh", FusionFieldAdapter(&nh));
-  lib.client->AddField("dx", FusionFieldAdapter(&dx));
-  lib.client->AddField("dz", FusionFieldAdapter(&dz));
-  lib.client->AddField("rleft", FusionFieldAdapter(&rleft));
-  lib.client->AddField("zmid", FusionFieldAdapter(&zmid));
-  lib.client->AddField("zbottom", FusionFieldAdapter(&zbottom));
-  lib.client->AddField("simag", FusionFieldAdapter(&simag));
-  lib.client->AddField("sibry", FusionFieldAdapter(&sibry));
-  lib.client->AddField("psi", FusionFieldAdapter(psi));
-  lib.client->AddField("psirz", FusionFieldAdapter(psirz));
-  lib.client->AddField("fpol", FusionFieldAdapter(fpol));
-  lib.client->AddField("ffprime", FusionFieldAdapter(ffprime));
-  lib.client->AddField("press", FusionFieldAdapter(press));
+  lib.client->AddField("rmaxis", FieldAdapter(&rmaxis));
+  lib.client->AddField("zmaxis", FieldAdapter(&zmaxis));
+  lib.client->AddField("nw", FieldAdapter(&nw));
+  lib.client->AddField("nh", FieldAdapter(&nh));
+  lib.client->AddField("dx", FieldAdapter(&dx));
+  lib.client->AddField("dz", FieldAdapter(&dz));
+  lib.client->AddField("rleft", FieldAdapter(&rleft));
+  lib.client->AddField("zmid", FieldAdapter(&zmid));
+  lib.client->AddField("zbottom", FieldAdapter(&zbottom));
+  lib.client->AddField("simag", FieldAdapter(&simag));
+  lib.client->AddField("sibry", FieldAdapter(&sibry));
+  lib.client->AddField("psi", FieldAdapter(psi));
+  lib.client->AddField("psirz", FieldAdapter(psirz));
+  lib.client->AddField("fpol", FieldAdapter(fpol));
+  lib.client->AddField("ffprime", FieldAdapter(ffprime));
+  lib.client->AddField("press", FieldAdapter(press));
 }

@@ -36,14 +36,14 @@ namespace fusion_io {
   };
 
   template <typename fieldtype>
-  class FusionFieldAdapter {
+  class FieldAdapter {
     public:
       using value_type = std::remove_pointer_t<std::remove_pointer_t<fieldtype>>;
       fieldtype* field;
       int size;
       std::vector<pcms::GO> gids_;
 
-      FusionFieldAdapter(fieldtype* fieldIn, int sizeIn=0) {
+      FieldAdapter(fieldtype* fieldIn, int sizeIn=0) {
         field = fieldIn;
         size = sizeIn;
         gids_ = std::vector<pcms::GO>(size);
