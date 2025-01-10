@@ -65,7 +65,9 @@ class mars_source : public fio_source {
   int get_series(const series_type, fio_series**);
   int get_available_fields(fio_field_list*) const;
 
+#ifdef PCMS_ENABLED
   void add_pcms_fields(fusion_io::Library lib);
+#endif //PCMS_ENABLED
 };
 
 

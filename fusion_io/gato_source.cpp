@@ -328,6 +328,7 @@ int gato_source::set_element_bounds()
   return FIO_SUCCESS;
 }
 
+#ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void gato_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("psival", FieldAdapter(psival));
@@ -341,3 +342,4 @@ void gato_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("dpsidr", FieldAdapter(dpsidr));
   lib.client->AddField("dpsidz", FieldAdapter(dpsidz));
 }
+#endif //PCMS_ENABLED

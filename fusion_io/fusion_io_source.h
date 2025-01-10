@@ -55,7 +55,10 @@ class fio_source {
     *t = 0.;
     return FIO_UNSUPPORTED;
   }
+
+#ifdef PCMS_ENABLED
   virtual void add_pcms_fields(fusion_io::Library lib) {}
+#endif //PCMS_ENABLED
 };
 
 #endif 

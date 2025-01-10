@@ -246,6 +246,7 @@ int geqdsk_source::interpolate_psi(const double r0, const double z0,
   return FIO_SUCCESS;
 }
 
+#ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void geqdsk_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("rmaxis", FieldAdapter(&rmaxis));
@@ -265,3 +266,4 @@ void geqdsk_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("ffprime", FieldAdapter(ffprime));
   lib.client->AddField("press", FieldAdapter(press));
 }
+#endif //PCMS_ENABLED

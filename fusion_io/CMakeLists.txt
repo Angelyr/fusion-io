@@ -59,7 +59,13 @@ target_include_directories(fusionio_fusionio PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:fusionio_fusionio,Fortran_MODULE_DIRECTORY>>
 )
-target_link_libraries(fusionio_fusionio PUBLIC fusionio_m3dc1 pcms::core)
+target_link_libraries(fusionio_fusionio PUBLIC fusionio_m3dc1)
+
+if(pcms_FOUND)
+        target_compile_definitions(fusionio_fusionio PUBLIC PCMS_ENABLED=TRUE)
+        target_link_libraries(fusionio_fusionio PUBLIC pcms::core)
+endif()
+
 target_compile_definitions(fusionio_fusionio PRIVATE
         $<$<COMPILE_LANGUAGE:Fortran>: FORTRAN>)
 add_library(fusionio::fusionio ALIAS fusionio_fusionio)

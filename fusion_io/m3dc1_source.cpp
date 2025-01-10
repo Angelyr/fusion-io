@@ -369,6 +369,7 @@ int m3dc1_source::get_slice_time(const int slice, double* time)
   return FIO_SUCCESS;
 }
 
+#ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void m3dc1_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("bzero", FieldAdapter(&bzero));
@@ -399,3 +400,4 @@ void m3dc1_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("kprad_z", FieldAdapter(&kprad_z));
   lib.client->AddField("numvar", FieldAdapter(&numvar));
 }
+#endif //PCMS_ENABLED

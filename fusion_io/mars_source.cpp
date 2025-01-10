@@ -321,6 +321,7 @@ int mars_source::get_available_fields(fio_field_list* fields) const
   return FIO_SUCCESS;
 }
 
+#ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void mars_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("nrp1", FieldAdapter(&nrp1));
@@ -395,3 +396,4 @@ void mars_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("bplasma_val_r", FieldAdapter(bplasma->val_r));
   lib.client->AddField("bplasma_val_i", FieldAdapter(bplasma->val_i));
 }
+#endif //PCMS_ENABLED

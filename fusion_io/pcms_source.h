@@ -1,3 +1,5 @@
+#ifdef PCMS_ENABLED
+
 #ifndef PCMS_SOURCE_H
 #define PCMS_SOURCE_H
 
@@ -21,3 +23,5 @@ inline Omega_h::HostRead<double> evaluate(fio_field* field, double* x, double* v
 }
 
 #endif //PCMS_SOURCE_H
+
+#endif //PCMS_ENABLED

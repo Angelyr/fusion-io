@@ -289,6 +289,7 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
   return FIO_SUCCESS;
 }
 
+#ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void gpec_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("b0_ntor", FieldAdapter(&b0.ntor));
@@ -318,3 +319,4 @@ void gpec_source::add_pcms_fields(fusion_io::Library lib) {
   lib.client->AddField("bx_v_real", FieldAdapter(bx.v_real));
   lib.client->AddField("bx_v_imag", FieldAdapter(bx.v_imag));
 }
+#endif //PCMS_ENABLED

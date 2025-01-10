@@ -1,3 +1,5 @@
+#ifdef PCMS_ENABLED
+
 #ifndef PCMS_LIB_H
 #define PCMS_LIB_H
 
@@ -115,3 +117,5 @@ namespace fusion_io {
 }
 
 #endif //PCMS_LIB_H
+
+#endif //PCMS_ENABLED

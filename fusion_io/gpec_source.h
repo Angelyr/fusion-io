@@ -56,7 +56,9 @@ class gpec_source : public fio_source {
   int center(double* r0, double* z0) const;
   int extent(double* r0, double* r1, double* z0, double* z1) const;
 
+#ifdef PCMS_ENABLED
   void add_pcms_fields(fusion_io::Library lib);
+#endif //PCMS_ENABLED
 };
 
 #endif
