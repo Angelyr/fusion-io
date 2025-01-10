@@ -35,6 +35,26 @@ namespace fusion_io {
     }
   };
 
+  struct GetRank
+  {
+    GetRank(const int& id, const int& dim) : id_(id), dim_(dim) {}
+    auto operator()(const redev::ClassPtn& ptn) const
+    {
+      PCMS_FUNCTION_TIMER;
+      const auto ent = redev::ClassPtn::ModelEnt({dim_, id_});
+      return ptn.GetRank(ent);
+    }
+    auto operator()(const redev::RCBPtn& /*unused*/) const
+    {
+      PCMS_FUNCTION_TIMER;
+      std::cerr << "RCB partition not handled yet\n";
+      std::terminate();
+      return 0;
+    }
+    const int& id_;
+    const int& dim_;
+  };
+
   template <typename fieldtype>
   class FieldAdapter {
     public:
@@ -55,7 +75,13 @@ namespace fusion_io {
       }
 
       [[nodiscard]] pcms::ReversePartitionMap GetReversePartitionMap(const redev::Partition& partition) const {
-        return {};
+        pcms::ReversePartitionMap reverse_partition;
+        int local_index = 0;
+        for (int i=0; i < size; i++) {
+          auto dr = std::visit(GetRank{i, 0}, partition);
+          reverse_partition[dr].emplace_back(local_index++);
+        }
+        return reverse_partition;
       }
 
       template < typename = typename std::enable_if< IndirectionLevel<fieldtype>::value==1 > >
