@@ -249,21 +249,10 @@ int geqdsk_source::interpolate_psi(const double r0, const double z0,
 #ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void geqdsk_source::add_pcms_fields(fusion_io::Library lib) {
-  lib.client->AddField("rmaxis", FieldAdapter(&rmaxis));
-  lib.client->AddField("zmaxis", FieldAdapter(&zmaxis));
-  lib.client->AddField("nw", FieldAdapter(&nw));
-  lib.client->AddField("nh", FieldAdapter(&nh));
-  lib.client->AddField("dx", FieldAdapter(&dx));
-  lib.client->AddField("dz", FieldAdapter(&dz));
-  lib.client->AddField("rleft", FieldAdapter(&rleft));
-  lib.client->AddField("zmid", FieldAdapter(&zmid));
-  lib.client->AddField("zbottom", FieldAdapter(&zbottom));
-  lib.client->AddField("simag", FieldAdapter(&simag));
-  lib.client->AddField("sibry", FieldAdapter(&sibry));
-  lib.client->AddField("psi", FieldAdapter(psi));
-  lib.client->AddField("psirz", FieldAdapter(psirz));
-  lib.client->AddField("fpol", FieldAdapter(fpol));
-  lib.client->AddField("ffprime", FieldAdapter(ffprime));
-  lib.client->AddField("press", FieldAdapter(press));
+  lib.client->AddField("psi", FieldAdapter(psi, nw));
+  lib.client->AddField("psirz", FieldAdapter(psirz, nh, nw));
+  lib.client->AddField("fpol", FieldAdapter(fpol, nw));
+  lib.client->AddField("ffprime", FieldAdapter(ffprime, nw));
+  lib.client->AddField("press", FieldAdapter(press, nw));
 }
 #endif //PCMS_ENABLED

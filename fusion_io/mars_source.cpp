@@ -324,76 +324,69 @@ int mars_source::get_available_fields(fio_field_list* fields) const
 #ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void mars_source::add_pcms_fields(fusion_io::Library lib) {
-  lib.client->AddField("nrp1", FieldAdapter(&nrp1));
-  lib.client->AddField("nchi", FieldAdapter(&nchi));
-  lib.client->AddField("aspect", FieldAdapter(&aspect));
-  lib.client->AddField("r0exp", FieldAdapter(&r0exp));
-  lib.client->AddField("b0exp", FieldAdapter(&b0exp));
-  lib.client->AddField("bfac", FieldAdapter(&bfac));
-  lib.client->AddField("vfac", FieldAdapter(&vfac));
-  lib.client->AddField("psiiso", FieldAdapter(psiiso));
+  lib.client->AddField("psiiso", FieldAdapter(psiiso, 2*nrp1));
 
-  lib.client->AddField("eqdata_cse", FieldAdapter(eqdata->cse));
-  lib.client->AddField("eqdata_peq", FieldAdapter(eqdata->peq));
-  lib.client->AddField("eqdata_t", FieldAdapter(eqdata->t));
-  lib.client->AddField("eqdata_ttp", FieldAdapter(eqdata->ttp));
-  lib.client->AddField("eqdata_ppeq", FieldAdapter(eqdata->ppeq));
-  lib.client->AddField("eqdata_dpsids", FieldAdapter(eqdata->dpsids));
-  lib.client->AddField("eqdata_req", FieldAdapter(eqdata->req));
-  lib.client->AddField("eqdata_zeq", FieldAdapter(eqdata->zeq));
-  lib.client->AddField("eqdata_rja", FieldAdapter(eqdata->rja));
-  lib.client->AddField("eqdata_g11l", FieldAdapter(eqdata->g11l));
-  lib.client->AddField("eqdata_g22l", FieldAdapter(eqdata->g22l));
-  lib.client->AddField("eqdata_g33l", FieldAdapter(eqdata->g33l));
-  lib.client->AddField("eqdata_g12l", FieldAdapter(eqdata->g12l));
-  lib.client->AddField("eqdata_rdcdz", FieldAdapter(eqdata->rdcdz));
-  lib.client->AddField("eqdata_rdsdz", FieldAdapter(eqdata->rdsdz));
-  lib.client->AddField("eqdata_rbz", FieldAdapter(eqdata->rbz));
-  lib.client->AddField("eqdata_tp", FieldAdapter(eqdata->tp));
+  lib.client->AddField("eqdata_cse", FieldAdapter(eqdata->cse, nrp1));
+  lib.client->AddField("eqdata_peq", FieldAdapter(eqdata->peq, nrp1));
+  lib.client->AddField("eqdata_t", FieldAdapter(eqdata->t, nrp1));
+  lib.client->AddField("eqdata_ttp", FieldAdapter(eqdata->ttp, nrp1));
+  lib.client->AddField("eqdata_ppeq", FieldAdapter(eqdata->ppeq, nrp1));
+  lib.client->AddField("eqdata_dpsids", FieldAdapter(eqdata->dpsids, nrp1));
+  lib.client->AddField("eqdata_req", FieldAdapter(eqdata->req, nrp1, nchi));
+  lib.client->AddField("eqdata_zeq", FieldAdapter(eqdata->zeq, nrp1, nchi));
+  lib.client->AddField("eqdata_rja", FieldAdapter(eqdata->rja, nrp1, nchi));
+  lib.client->AddField("eqdata_g11l", FieldAdapter(eqdata->g11l, nrp1, nchi));
+  lib.client->AddField("eqdata_g22l", FieldAdapter(eqdata->g22l, nrp1, nchi));
+  lib.client->AddField("eqdata_g33l", FieldAdapter(eqdata->g33l, nrp1, nchi));
+  lib.client->AddField("eqdata_g12l", FieldAdapter(eqdata->g12l, nrp1, nchi));
+  lib.client->AddField("eqdata_rdcdz", FieldAdapter(eqdata->rdcdz, nrp1, nchi));
+  lib.client->AddField("eqdata_rdsdz", FieldAdapter(eqdata->rdsdz, nrp1, nchi));
+  lib.client->AddField("eqdata_rbz", FieldAdapter(eqdata->rbz, nrp1, nchi));
+  lib.client->AddField("eqdata_tp", FieldAdapter(eqdata->tp, nrp1));
 
-  lib.client->AddField("eqdatam_cse", FieldAdapter(eqdatam->cse));
-  lib.client->AddField("eqdatam_peq", FieldAdapter(eqdatam->peq));
-  lib.client->AddField("eqdatam_t", FieldAdapter(eqdatam->t));
-  lib.client->AddField("eqdatam_ttp", FieldAdapter(eqdatam->ttp));
-  lib.client->AddField("eqdatam_ppeq", FieldAdapter(eqdatam->ppeq));
-  lib.client->AddField("eqdatam_dpsids", FieldAdapter(eqdatam->dpsids));
-  lib.client->AddField("eqdatam_req", FieldAdapter(eqdatam->req));
-  lib.client->AddField("eqdatam_zeq", FieldAdapter(eqdatam->zeq));
-  lib.client->AddField("eqdatam_rja", FieldAdapter(eqdatam->rja));
-  lib.client->AddField("eqdatam_g11l", FieldAdapter(eqdatam->g11l));
-  lib.client->AddField("eqdatam_g22l", FieldAdapter(eqdatam->g22l));
-  lib.client->AddField("eqdatam_g33l", FieldAdapter(eqdatam->g33l));
-  lib.client->AddField("eqdatam_g12l", FieldAdapter(eqdatam->g12l));
-  lib.client->AddField("eqdatam_rdcdz", FieldAdapter(eqdatam->rdcdz));
-  lib.client->AddField("eqdatam_rdsdz", FieldAdapter(eqdatam->rdsdz));
-  lib.client->AddField("eqdatam_rbz", FieldAdapter(eqdatam->rbz));
-  lib.client->AddField("eqdatam_tp", FieldAdapter(eqdatam->tp));
+  lib.client->AddField("eqdatam_cse", FieldAdapter(eqdatam->cse, nrp1));
+  lib.client->AddField("eqdatam_peq", FieldAdapter(eqdatam->peq, nrp1));
+  lib.client->AddField("eqdatam_t", FieldAdapter(eqdatam->t, nrp1));
+  lib.client->AddField("eqdatam_ttp", FieldAdapter(eqdatam->ttp, nrp1));
+  lib.client->AddField("eqdatam_ppeq", FieldAdapter(eqdatam->ppeq, nrp1));
+  lib.client->AddField("eqdatam_dpsids", FieldAdapter(eqdatam->dpsids, nrp1));
+  lib.client->AddField("eqdatam_req", FieldAdapter(eqdatam->req, nrp1, nchi));
+  lib.client->AddField("eqdatam_zeq", FieldAdapter(eqdatam->zeq, nrp1, nchi));
+  lib.client->AddField("eqdatam_rja", FieldAdapter(eqdatam->rja, nrp1, nchi));
+  lib.client->AddField("eqdatam_g11l", FieldAdapter(eqdatam->g11l, nrp1, nchi));
+  lib.client->AddField("eqdatam_g22l", FieldAdapter(eqdatam->g22l, nrp1, nchi));
+  lib.client->AddField("eqdatam_g33l", FieldAdapter(eqdatam->g33l, nrp1, nchi));
+  lib.client->AddField("eqdatam_g12l", FieldAdapter(eqdatam->g12l, nrp1, nchi));
+  lib.client->AddField("eqdatam_rdcdz", FieldAdapter(eqdatam->rdcdz, nrp1, nchi));
+  lib.client->AddField("eqdatam_rdsdz", FieldAdapter(eqdatam->rdsdz, nrp1, nchi));
+  lib.client->AddField("eqdatam_rbz", FieldAdapter(eqdatam->rbz, nrp1, nchi));
+  lib.client->AddField("eqdatam_tp", FieldAdapter(eqdatam->tp, nrp1));
 
-  lib.client->AddField("bplasma_maxm", FieldAdapter(&bplasma->maxm));
-  lib.client->AddField("bplasma_nrp", FieldAdapter(&bplasma->nrp));
-  lib.client->AddField("bplasma_dpsids", FieldAdapter(bplasma->dpsids));
-  lib.client->AddField("bplasma_t", FieldAdapter(bplasma->t));
-  lib.client->AddField("bplasma_mnum_r", FieldAdapter(bplasma->mnum_r));
-  lib.client->AddField("bplasma_mnum_i", FieldAdapter(bplasma->mnum_i));
-  lib.client->AddField("bplasma_val_r", FieldAdapter(bplasma->val_r));
-  lib.client->AddField("bplasma_val_i", FieldAdapter(bplasma->val_i));
+  if(xplasma->extra) {
+    lib.client->AddField("xplasma_dpsids", FieldAdapter(xplasma->dpsids, 3, xplasma->nrp));
+    lib.client->AddField("xplasma_t", FieldAdapter(xplasma->t, 3, xplasma->nrp));
+  }
+  lib.client->AddField("xplasma_mnum_r", FieldAdapter(xplasma->mnum_r, 3, xplasma->maxm));
+  lib.client->AddField("xplasma_mnum_i", FieldAdapter(xplasma->mnum_i, 3, xplasma->maxm));
+  lib.client->AddField("xplasma_val_r", FieldAdapter(xplasma->val_r, 3, xplasma->maxm, xplasma->nrp));
+  lib.client->AddField("xplasma_val_i", FieldAdapter(xplasma->val_i, 3, xplasma->maxm, xplasma->nrp));
 
-  lib.client->AddField("vplasma_maxm", FieldAdapter(&vplasma->maxm));
-  lib.client->AddField("vplasma_nrp", FieldAdapter(&vplasma->nrp));
-  lib.client->AddField("vplasma_dpsids", FieldAdapter(vplasma->dpsids));
-  lib.client->AddField("vplasma_t", FieldAdapter(vplasma->t));
-  lib.client->AddField("vplasma_mnum_r", FieldAdapter(vplasma->mnum_r));
-  lib.client->AddField("vplasma_mnum_i", FieldAdapter(vplasma->mnum_i));
-  lib.client->AddField("vplasma_val_r", FieldAdapter(vplasma->val_r));
-  lib.client->AddField("vplasma_val_i", FieldAdapter(vplasma->val_i));
+  if(vplasma->extra) {
+    lib.client->AddField("vplasma_dpsids", FieldAdapter(vplasma->dpsids, 3, vplasma->nrp));
+    lib.client->AddField("vplasma_t", FieldAdapter(vplasma->t, 3, vplasma->nrp));
+  }
+  lib.client->AddField("vplasma_mnum_r", FieldAdapter(vplasma->mnum_r, 3, vplasma->maxm));
+  lib.client->AddField("vplasma_mnum_i", FieldAdapter(vplasma->mnum_i, 3, vplasma->maxm));
+  lib.client->AddField("vplasma_val_r", FieldAdapter(vplasma->val_r, 3, vplasma->maxm, vplasma->nrp));
+  lib.client->AddField("vplasma_val_i", FieldAdapter(vplasma->val_i, 3, vplasma->maxm, vplasma->nrp));
 
-  lib.client->AddField("bplasma_maxm", FieldAdapter(&bplasma->maxm));
-  lib.client->AddField("bplasma_nrp", FieldAdapter(&bplasma->nrp));
-  lib.client->AddField("bplasma_dpsids", FieldAdapter(bplasma->dpsids));
-  lib.client->AddField("bplasma_t", FieldAdapter(bplasma->t));
-  lib.client->AddField("bplasma_mnum_r", FieldAdapter(bplasma->mnum_r));
-  lib.client->AddField("bplasma_mnum_i", FieldAdapter(bplasma->mnum_i));
-  lib.client->AddField("bplasma_val_r", FieldAdapter(bplasma->val_r));
-  lib.client->AddField("bplasma_val_i", FieldAdapter(bplasma->val_i));
+  if(bplasma->extra) {
+    lib.client->AddField("bplasma_dpsids", FieldAdapter(bplasma->dpsids, 3, bplasma->nrp));
+    lib.client->AddField("bplasma_t", FieldAdapter(bplasma->t, 3, bplasma->nrp));
+  }
+  lib.client->AddField("bplasma_mnum_r", FieldAdapter(bplasma->mnum_r, 3, bplasma->maxm));
+  lib.client->AddField("bplasma_mnum_i", FieldAdapter(bplasma->mnum_i, 3, bplasma->maxm));
+  lib.client->AddField("bplasma_val_r", FieldAdapter(bplasma->val_r, 3, bplasma->maxm, bplasma->nrp));
+  lib.client->AddField("bplasma_val_i", FieldAdapter(bplasma->val_i, 3, bplasma->maxm, bplasma->nrp));
 }
 #endif //PCMS_ENABLED

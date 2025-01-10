@@ -292,31 +292,19 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
 #ifdef PCMS_ENABLED
 using fusion_io::FieldAdapter;
 void gpec_source::add_pcms_fields(fusion_io::Library lib) {
-  lib.client->AddField("b0_ntor", FieldAdapter(&b0.ntor));
-  lib.client->AddField("b0_nr", FieldAdapter(&b0.nr));
-  lib.client->AddField("b0_nz", FieldAdapter(&b0.nz));
-  lib.client->AddField("b0_n_comp", FieldAdapter(&b0.n_comp));
-  lib.client->AddField("b0_r", FieldAdapter(b0.r));
-  lib.client->AddField("b0_z", FieldAdapter(b0.z));
-  lib.client->AddField("b0_v_real", FieldAdapter(b0.v_real));
-  lib.client->AddField("b0_v_imag", FieldAdapter(b0.v_imag));
+  lib.client->AddField("b0_r", FieldAdapter(b0.r, b0.nr));
+  lib.client->AddField("b0_z", FieldAdapter(b0.z, b0.nz));
+  lib.client->AddField("b0_v_real", FieldAdapter(b0.v_real, b0.n_comp, b0.nr, b0.nz));
+  lib.client->AddField("b0_v_imag", FieldAdapter(b0.v_imag, b0.n_comp, b0.nr, b0.nz));
 
-  lib.client->AddField("b1_ntor", FieldAdapter(&b1.ntor));
-  lib.client->AddField("b1_nr", FieldAdapter(&b1.nr));
-  lib.client->AddField("b1_nz", FieldAdapter(&b1.nz));
-  lib.client->AddField("b1_n_comp", FieldAdapter(&b1.n_comp));
-  lib.client->AddField("b1_r", FieldAdapter(b1.r));
-  lib.client->AddField("b1_z", FieldAdapter(b1.z));
-  lib.client->AddField("b1_v_real", FieldAdapter(b1.v_real));
-  lib.client->AddField("b1_v_imag", FieldAdapter(b1.v_imag));
+  lib.client->AddField("b1_r", FieldAdapter(b1.r, b1.nr));
+  lib.client->AddField("b1_z", FieldAdapter(b1.z, b1.nz));
+  lib.client->AddField("b1_v_real", FieldAdapter(b1.v_real, b1.n_comp, b1.nr, b1.nz));
+  lib.client->AddField("b1_v_imag", FieldAdapter(b1.v_imag, b1.n_comp, b1.nr, b1.nz));
 
-  lib.client->AddField("bx_ntor", FieldAdapter(&bx.ntor));
-  lib.client->AddField("bx_nr", FieldAdapter(&bx.nr));
-  lib.client->AddField("bx_nz", FieldAdapter(&bx.nz));
-  lib.client->AddField("bx_n_comp", FieldAdapter(&bx.n_comp));
-  lib.client->AddField("bx_r", FieldAdapter(bx.r));
-  lib.client->AddField("bx_z", FieldAdapter(bx.z));
-  lib.client->AddField("bx_v_real", FieldAdapter(bx.v_real));
-  lib.client->AddField("bx_v_imag", FieldAdapter(bx.v_imag));
+  lib.client->AddField("bx_r", FieldAdapter(bx.r, bx.nr));
+  lib.client->AddField("bx_z", FieldAdapter(bx.z, bx.nz));
+  lib.client->AddField("bx_v_real", FieldAdapter(bx.v_real, bx.n_comp, bx.nr, bx.nz));
+  lib.client->AddField("bx_v_imag", FieldAdapter(bx.v_imag, bx.n_comp, bx.nr, bx.nz));
 }
 #endif //PCMS_ENABLED

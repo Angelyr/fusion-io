@@ -62,13 +62,15 @@ namespace fusion_io {
     public:
       using value_type = std::remove_pointer_t<std::remove_pointer_t<fieldtype>>;
       fieldtype* field;
-      int size;
+      int size[3];
+      int totalSize;
       std::vector<pcms::GO> gids_;
 
-      FieldAdapter(fieldtype* fieldIn, int sizeIn=0) {
-        field = fieldIn;
-        size = sizeIn;
-        gids_ = std::vector<pcms::GO>(size);
+      FieldAdapter(fieldtype* fieldIn, int sizeX=1, int sizeY=1, int sizeZ=1) :
+        field(fieldIn), 
+        size{sizeX, sizeY, sizeZ} {
+        int totalSize = sizeX*sizeY*sizeZ;
+        gids_ = std::vector<pcms::GO>(totalSize);
         std::iota(gids_.begin(), gids_.end(), static_cast<pcms::GO>(0));
       }
 
@@ -79,7 +81,7 @@ namespace fusion_io {
       [[nodiscard]] pcms::ReversePartitionMap GetReversePartitionMap(const redev::Partition& partition) const {
         pcms::ReversePartitionMap reverse_partition;
         int local_index = 0;
-        for (int i=0; i < size; i++) {
+        for (int i=0; i < totalSize; i++) {
           auto dr = std::visit(GetRank{i, 0}, partition);
           reverse_partition[dr].emplace_back(local_index++);
         }
@@ -91,11 +93,11 @@ namespace fusion_io {
                     pcms::ScalarArrayView<const pcms::LO, pcms::HostMemorySpace> permutation) const
       {
         if (buffer.size() > 0) {
-          for (pcms::LO i = 0; i < size; i++) {
+          for (int i = 0; i < totalSize; i++) {
             buffer[i] = field[permutation[i]];
           }
         }
-        return size;
+        return totalSize;
       }
 
       template < typename = typename std::enable_if< IndirectionLevel<fieldtype>::value==1 > >
@@ -103,7 +105,7 @@ namespace fusion_io {
                        pcms::ScalarArrayView<const pcms::LO, pcms::HostMemorySpace> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
-        for (size_t i = 0; i < buffer.size(); ++i) {
+        for (int i = 0; i < buffer.size(); ++i) {
           field[permutation[i]] = buffer[i];
         }
       }
