@@ -56,12 +56,12 @@ namespace fusion_io {
         field(fieldIn), 
         size{sizeX, sizeY, sizeZ} {
         int totalSize = sizeX*sizeY*sizeZ;
-        gids_ = std::vector<pcms::GO>(totalSize);
-        std::iota(gids_.begin(), gids_.end(), static_cast<pcms::GO>(0));
+        gids = std::vector<pcms::GO>(totalSize);
+        std::iota(gids.begin(), gids.end(), static_cast<pcms::GO>(0));
       }
 
       [[nodiscard]] std::vector<pcms::GO> GetGids() const { 
-        return gids_;
+        return gids;
       }
 
       [[nodiscard]] pcms::ReversePartitionMap GetReversePartitionMap(const redev::Partition& partition) const {
@@ -74,10 +74,17 @@ namespace fusion_io {
         return reverse_partition;
       }
 
+      template<typename T>
+      using remove1Pointer = typename std::remove_pointer<T>::type;
+      template<typename T>
+      using remove2Pointers = remove1Pointer<remove1Pointer<T>>;
+      template<typename T>
+      using remove3Pointers = remove1Pointer<remove1Pointer<remove1Pointer<T>>>;
+
       //Serialize 1D Pointers
       template <typename U = fieldType>
       typename std::enable_if<std::is_pointer<U>::value 
-                          && !std::is_pointer<typename std::remove_pointer<U>::type>::value, int>::type
+                          && !std::is_pointer<remove1Pointer<U>>::value, int>::type
       Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
                     pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -93,7 +100,7 @@ namespace fusion_io {
       //Deserialize 1D Pointers
       template <typename U = fieldType>
       typename std::enable_if<std::is_pointer<U>::value 
-                          && !std::is_pointer<typename std::remove_pointer<U>::type>::value, void>::type
+                          && !std::is_pointer<remove1Pointer<U>>::value, void>::type
       Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
                        pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -105,8 +112,8 @@ namespace fusion_io {
 
       //Serialize 2D Pointers
       template <typename U = fieldType>
-      typename std::enable_if<std::is_pointer<typename std::remove_pointer<U>::type>::value 
-                          && !std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::value, int>::type
+      typename std::enable_if<std::is_pointer<remove1Pointer<U>>::value 
+                          && !std::is_pointer<remove2Pointers<U>>::value, int>::type
       Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
                     pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -123,8 +130,8 @@ namespace fusion_io {
 
       //Deserialize 2D Pointers
       template <typename U = fieldType>
-      typename std::enable_if<std::is_pointer<typename std::remove_pointer<U>::type>::value 
-                          && !std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::value, void>::type
+      typename std::enable_if<std::is_pointer<remove1Pointer<U>>::value 
+                          && !std::is_pointer<remove2Pointers<U>>::value, void>::type
       Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
                        pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -138,8 +145,8 @@ namespace fusion_io {
 
       //Serialize 3D Pointers
       template <typename U = fieldType>
-      typename std::enable_if<std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::value 
-                          && !std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::type>::value, int>::type
+      typename std::enable_if<std::is_pointer<remove2Pointers<U>>::value 
+                          && !std::is_pointer<remove3Pointers<U>>::value, int>::type
       Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
                     pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -157,8 +164,8 @@ namespace fusion_io {
 
       //Deserialize 3D Pointers
       template <typename U = fieldType>
-      typename std::enable_if<std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::value 
-                          && !std::is_pointer<typename std::remove_pointer<typename std::remove_pointer<typename std::remove_pointer<U>::type>::type>::type>::value, void>::type
+      typename std::enable_if<std::is_pointer<remove2Pointers<U>>::value 
+                          && !std::is_pointer<remove3Pointers<U>>::value, void>::type
       Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
                        pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
@@ -175,7 +182,7 @@ namespace fusion_io {
       fieldType field;
       int size[3];
       int totalSize;
-      std::vector<pcms::GO> gids_;
+      std::vector<pcms::GO> gids;
   };
 }
 
