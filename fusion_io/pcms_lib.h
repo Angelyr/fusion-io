@@ -8,6 +8,27 @@
 #include <pcms/field.h>
 #include <pcms/types.h>
 
+namespace {
+  template<typename T>
+  using remove1Pointer = typename std::remove_pointer<T>::type;
+  template<typename T>
+  using remove2Pointers = remove1Pointer<remove1Pointer<T>>;
+  template<typename T>
+  using remove3Pointers = remove1Pointer<remove1Pointer<remove1Pointer<T>>>;
+
+  template <typename T, typename ReturnT>
+  using HasOnePointer = typename std::enable_if<std::is_pointer<T>::value 
+                                            && !std::is_pointer<remove1Pointer<T>>::value, ReturnT>::type;
+
+  template <typename T, typename ReturnT>
+  using HasTwoPointers = typename std::enable_if<std::is_pointer<remove1Pointer<T>>::value 
+                                            && !std::is_pointer<remove2Pointers<T>>::value, ReturnT>::type;
+
+  template <typename T, typename ReturnT>
+  using HasThreePointers = typename std::enable_if<std::is_pointer<remove2Pointers<T>>::value 
+                                              && !std::is_pointer<remove3Pointers<T>>::value, ReturnT>::type;
+}
+
 namespace fusion_io {
   class Library {
     public:
@@ -49,7 +70,7 @@ namespace fusion_io {
   template <typename fieldType>
   class FieldAdapter {
     public:
-      using value_type = std::remove_pointer_t<std::remove_pointer_t<std::remove_pointer_t<fieldType>>>;
+      using value_type = remove3Pointers<fieldType>;
       using memory_space = pcms::HostMemorySpace;
 
       FieldAdapter(fieldType fieldIn, int sizeX=1, int sizeY=1, int sizeZ=1) :
@@ -74,19 +95,10 @@ namespace fusion_io {
         return reverse_partition;
       }
 
-      template<typename T>
-      using remove1Pointer = typename std::remove_pointer<T>::type;
-      template<typename T>
-      using remove2Pointers = remove1Pointer<remove1Pointer<T>>;
-      template<typename T>
-      using remove3Pointers = remove1Pointer<remove1Pointer<remove1Pointer<T>>>;
-
-      //Serialize 1D Pointers
+      //Serialize 1D Pointers 
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<T>::value 
-                          && !std::is_pointer<remove1Pointer<T>>::value, int>::type
-      Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
-                    pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
+      HasOnePointer<T, int> Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
+                                      pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
         if (buffer.size() > 0) {
@@ -99,10 +111,8 @@ namespace fusion_io {
 
       //Deserialize 1D Pointers
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<T>::value 
-                          && !std::is_pointer<remove1Pointer<T>>::value, void>::type
-      Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
-                       pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
+      HasOnePointer<T, void> Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
+                                        pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
         for (int i = 0; i < buffer.size(); ++i) {
@@ -112,9 +122,7 @@ namespace fusion_io {
 
       //Serialize 2D Pointers
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<remove1Pointer<T>>::value 
-                          && !std::is_pointer<remove2Pointers<T>>::value, int>::type
-      Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
+      HasTwoPointers<T, int> Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
                     pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
@@ -130,10 +138,8 @@ namespace fusion_io {
 
       //Deserialize 2D Pointers
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<remove1Pointer<T>>::value 
-                          && !std::is_pointer<remove2Pointers<T>>::value, void>::type
-      Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
-                       pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
+      HasTwoPointers<T, void> Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
+                                          pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
         for (int i = 0; i < buffer.size(); ++i) {
@@ -145,9 +151,7 @@ namespace fusion_io {
 
       //Serialize 3D Pointers
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<remove2Pointers<T>>::value 
-                          && !std::is_pointer<remove3Pointers<T>>::value, int>::type
-      Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
+      HasThreePointers<T, int> Serialize(pcms::ScalarArrayView<value_type, memory_space> buffer,
                     pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
@@ -164,9 +168,7 @@ namespace fusion_io {
 
       //Deserialize 3D Pointers
       template <typename T = fieldType>
-      typename std::enable_if<std::is_pointer<remove2Pointers<T>>::value 
-                          && !std::is_pointer<remove3Pointers<T>>::value, void>::type
-      Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
+      HasThreePointers<T, void> Deserialize(pcms::ScalarArrayView<const value_type, memory_space> buffer,
                        pcms::ScalarArrayView<const pcms::LO, memory_space> permutation) const
       {
         REDEV_ALWAYS_ASSERT(buffer.size() == permutation.size());
