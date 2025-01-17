@@ -1,6 +1,5 @@
 #include <fusion_io.h>
 #include "pcms_lib.h"
-#include "pcms_source.h"
 
 int main(int argc, char** argv)
 {
@@ -85,6 +84,7 @@ int main(int argc, char** argv)
     double phi1 = 0.;
     double x[3];
     double p, n, b[3];
+    Omega_h::HostRead<double> value;
     
     for(int i=0; i<npts; i++) {
         x[0] = R0 + (R1-R0)*i/(npts-1);
@@ -94,18 +94,18 @@ int main(int argc, char** argv)
         std::cout << "(" << x[0] << ", " << x[1] << ", " << x[2] << "):\n";
 
         if(pressure) {
-        result = pressure->eval(x, &p);
-        std::cout << "\tpressure = " << p << "\n";
+        value = pressure->evaluate(x, &p);
+        printf("\tpressure = %d\n", value[0]);
         }
 
         if(density) {
-        result = density->eval(x, &n);
-        std::cout << "\tdensity = " << n << "\n";
+        value = density->evaluate(x, &n);
+        printf("\tdensity = %d\n", value[0]);
         }
 
         if(magnetic_field) {
-        result = magnetic_field->eval(x, b);
-        std::cout << "\tB = (" << b[0] << ", " << b[1] << ", " << b[2] << "):\n";
+        value = magnetic_field->evaluate(x, b);
+        printf("\tB = (%d, %d, %d):\n", value[0], value[1], value[2]);
         }
     }
 

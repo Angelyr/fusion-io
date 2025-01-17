@@ -24,7 +24,6 @@ set(FUSIONIO_HEADERS
         mars_source.h
         options.h
         pcms_lib.h
-        pcms_source.h
 )
 
 add_library(fusionio_fusionio
