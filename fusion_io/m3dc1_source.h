@@ -30,10 +30,6 @@ class m3dc1_source : public fio_source {
   { return sizeof(int); }
   int allocate_search_hint(fio_hint* s);
   int deallocate_search_hint(fio_hint* s);
-
-#ifdef PCMS_ENABLED
-  void add_pcms_fields(fusion_io::Library lib);
-#endif //PCMS_ENABLED
 };
 
 
