@@ -41,7 +41,7 @@ class geqdsk_source : public fio_source {
 		      double* psi) const;
   
 #ifdef PCMS_ENABLED
-  void add_pcms_fields(fusion_io::Library lib);
+  void add_pcms_fields(Library lib);
 #endif //PCMS_ENABLED
 };
 

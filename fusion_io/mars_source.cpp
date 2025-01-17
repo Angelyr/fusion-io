@@ -322,8 +322,7 @@ int mars_source::get_available_fields(fio_field_list* fields) const
 }
 
 #ifdef PCMS_ENABLED
-using fusion_io::FieldAdapter;
-void mars_source::add_pcms_fields(fusion_io::Library lib) {
+void mars_source::add_pcms_fields(Library lib) {
   lib.client->AddField("psiiso", FieldAdapter(psiiso, 2*nrp1));
 
   lib.client->AddField("eqdata_cse", FieldAdapter(eqdata->cse, nrp1));

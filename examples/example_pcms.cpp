@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    fusion_io::Library lib(argc, argv);
+    Library lib(argc, argv);
 
     int result;
     fio_source* src;

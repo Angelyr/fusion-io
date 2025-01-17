@@ -329,8 +329,7 @@ int gato_source::set_element_bounds()
 }
 
 #ifdef PCMS_ENABLED
-using fusion_io::FieldAdapter;
-void gato_source::add_pcms_fields(fusion_io::Library lib) {
+void gato_source::add_pcms_fields(Library lib) {
   lib.client->AddField("psival", FieldAdapter(psival, jpsi+1));
   lib.client->AddField("pressure", FieldAdapter(pressure, jpsi+1));
   lib.client->AddField("ftor", FieldAdapter(ftor, jpsi+1));

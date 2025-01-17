@@ -38,7 +38,7 @@ class gato_source : public fio_source {
   virtual int get_available_fields(fio_field_list*) const;
 
 #ifdef PCMS_ENABLED
-  virtual void add_pcms_fields(fusion_io::Library lib);
+  virtual void add_pcms_fields(Library lib);
 #endif //PCMS_ENABLED
 };
 

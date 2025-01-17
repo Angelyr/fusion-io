@@ -6,7 +6,7 @@
 #include "fusion_io.h"
 #include "pcms_lib.h"
 
-inline int fio_open_source(fio_source** src, const int type, const char* filename, fusion_io::Library lib) {
+inline int fio_open_source(fio_source** src, const int type, const char* filename, Library lib) {
   int result = fio_open_source(src, type, filename);
   (*src)->add_pcms_fields(lib);
   return result;
