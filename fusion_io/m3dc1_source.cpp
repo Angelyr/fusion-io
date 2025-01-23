@@ -368,3 +368,4 @@ int m3dc1_source::get_slice_time(const int slice, double* time)
   *time *= t0;
   return FIO_SUCCESS;
 }
+
