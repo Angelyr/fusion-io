@@ -94,18 +94,18 @@ int main(int argc, char** argv)
         std::cout << "(" << x[0] << ", " << x[1] << ", " << x[2] << "):\n";
 
         if(pressure) {
-        value = pressure->evaluate(x, &p);
-        printf("\tpressure = %d\n", value[0]);
+            value = pressure->evaluate(x, &p);
+            printf("\tpressure = %d\n", value[0]);
         }
 
         if(density) {
-        value = density->evaluate(x, &n);
-        printf("\tdensity = %d\n", value[0]);
+            value = density->evaluate(x, &n);
+            printf("\tdensity = %d\n", value[0]);
         }
 
         if(magnetic_field) {
-        value = magnetic_field->evaluate(x, b);
-        printf("\tB = (%d, %d, %d):\n", value[0], value[1], value[2]);
+            value = magnetic_field->evaluate(x, b);
+            printf("\tB = (%d, %d, %d):\n", value[0], value[1], value[2]);
         }
     }
 
