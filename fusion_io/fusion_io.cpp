@@ -46,7 +46,7 @@ int fio_open_source(fio_source** src, const int type, const char* filename)
 }
 
 #ifdef PCMS_ENABLED
-int fio_open_source(fio_source** src, const int type, const char* filename, Library lib) {
+int fio_open_source(fio_source** src, const int type, const char* filename, PCMS_Library lib) {
   int result = fio_open_source(src, type, filename);
   (*src)->add_pcms_fields(lib);
   return result;

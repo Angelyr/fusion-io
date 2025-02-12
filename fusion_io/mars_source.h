@@ -66,7 +66,7 @@ class mars_source : public fio_source {
   int get_available_fields(fio_field_list*) const;
 
 #ifdef PCMS_ENABLED
-  void add_pcms_fields(Library lib);
+  void add_pcms_fields(PCMS_Library lib);
 #endif //PCMS_ENABLED
 };
 

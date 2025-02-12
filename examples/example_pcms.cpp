@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    Library lib(argc, argv);
+    PCMS_Library lib(argc, argv);
 
     int result;
     fio_source* src;

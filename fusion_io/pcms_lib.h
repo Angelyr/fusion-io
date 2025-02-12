@@ -26,30 +26,30 @@ namespace {
                                               && !std::is_pointer<remove3Pointers<T>>::value, ReturnT>::type;
 }
 
-class Library {
+class PCMS_Library {
   public:
   MPI_Comm comm;
   pcms::CouplerClient* client;
 
-  Library(int argc, char** argv) {
+  PCMS_Library(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     MPI_Comm_dup(MPI_COMM_WORLD, &comm);
     client = new pcms::CouplerClient("pcms_client", comm);
   }
 
-  ~Library() {
+  ~PCMS_Library() {
     MPI_Finalize();
     delete client;
   }
 };
 
 template <typename fieldType>
-class FieldAdapter {
+class FusionIOFieldAdapter {
   public:
     using value_type = remove3Pointers<fieldType>;
     using memory_space = pcms::HostMemorySpace;
 
-    FieldAdapter(fieldType fieldIn, int sizeX=1, int sizeY=1, int sizeZ=1) :
+    FusionIOFieldAdapter(fieldType fieldIn, int sizeX=1, int sizeY=1, int sizeZ=1) :
       field(fieldIn), 
       size{sizeX, sizeY, sizeZ} {
       int totalSize = sizeX*sizeY*sizeZ;
@@ -162,7 +162,7 @@ class FieldAdapter {
     int totalSize;
     std::vector<pcms::GO> gids;
 
-}; //FieldAdapter
+}; //class FusionIOFieldAdapter
 
 #endif //PCMS_LIB_H
 
