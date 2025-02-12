@@ -8,6 +8,15 @@ include(FindPkgConfig)
 # set(PKG_CONFIG_ARGN "--static")
 pkg_check_modules(HDF5 REQUIRED IMPORTED_TARGET hdf5)
 
+option(FUSIONIO_ENABLE_PCMS OFF)
+if (FUSIONIO_ENABLE_PCMS)
+    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CMAKE_CXX_STANDARD 17)
+    find_package(pcms REQUIRED)
+    find_package(perfstubs REQUIRED)
+    set_property(TARGET Omega_h::omega_h PROPERTY INTERFACE_COMPILE_OPTIONS "")
+endif()
+
 option(FUSIONIO_ENABLE_PYTHON "Enable Python" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
