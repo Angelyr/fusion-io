@@ -57,7 +57,7 @@ class fio_source {
   }
 
 #ifdef PCMS_ENABLED
-  virtual void add_pcms_fields(PCMS_Library lib) {}
+  virtual void add_pcms_fields(PCMS_Library& lib) {}
 #endif //PCMS_ENABLED
 };
 

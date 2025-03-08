@@ -8,6 +8,8 @@
 #include <pcms/field.h>
 #include <pcms/types.h>
 
+using pcms::CouplerClient;
+
 namespace {
   template<typename T>
   using remove1Pointer = typename std::remove_pointer<T>::type;
@@ -28,25 +30,26 @@ namespace {
 
 class PCMS_Library {
   public:
-  pcms::CouplerClient* client;
+  std::unique_ptr<CouplerClient> client;
   Omega_h::Library lib;
 
   PCMS_Library(int argc, char** argv) {
     lib = Omega_h::Library(&argc, &argv);
+    MPI_Comm comm = lib.world()->get_impl();
     int isRdv = atoi(argv[2]);
     if (isRdv) {
       const auto dim = 1;
       auto ranks = redev::LOs({0});
       auto cuts = redev::Reals({0});
-      auto ptn = redev::RCBPtn(dim,ranks,cuts);
-      client = new pcms::CouplerClient("pcms_client", lib.world()->get_impl(), redev::Partition{ptn});
+      auto ptn = redev::Partition{redev::RCBPtn(dim,ranks,cuts)};
+      client = std::unique_ptr<CouplerClient>(new CouplerClient("pcms_client", comm, ptn));
     }
     else
-      client = new pcms::CouplerClient("pcms_client", lib.world()->get_impl());
+      client = std::unique_ptr<CouplerClient>(new CouplerClient("pcms_client", comm));
   }
 
   ~PCMS_Library() {
-    // delete client;
+    Kokkos::finalize();
   }
 };
 

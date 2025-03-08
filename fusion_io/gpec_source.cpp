@@ -290,7 +290,7 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
 }
 
 #ifdef PCMS_ENABLED
-void gpec_source::add_pcms_fields(PCMS_Library lib) {
+void gpec_source::add_pcms_fields(PCMS_Library& lib) {
   lib.client->AddField("b0_r", FusionIOFieldAdapter(b0.r, b0.nr));
   lib.client->AddField("b0_z", FusionIOFieldAdapter(b0.z, b0.nz));
   lib.client->AddField("b0_v_real", FusionIOFieldAdapter(b0.v_real, b0.n_comp, b0.nr, b0.nz));
