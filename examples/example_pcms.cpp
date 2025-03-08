@@ -10,7 +10,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  PCMS_Library lib(argc, argv);
+  auto mpi = Omega_h::Library(&argc, &argv);
+  PCMS_Library lib(argc, argv, mpi.world()->get_impl());
 
   int result;
   fio_source* src;
@@ -43,9 +44,9 @@ int main(int argc, char** argv)
 
 
   if(result != FIO_SUCCESS) {
-      std::cerr << "Error opening file" << std::endl;
-      delete(src);
-      return result;
+    std::cerr << "Error opening file" << std::endl;
+    delete(src);
+    return result;
   };
 
   // set options for fields obtained from this source

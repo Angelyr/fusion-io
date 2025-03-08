@@ -31,11 +31,8 @@ namespace {
 class PCMS_Library {
   public:
   std::unique_ptr<CouplerClient> client;
-  Omega_h::Library lib;
 
-  PCMS_Library(int argc, char** argv) {
-    lib = Omega_h::Library(&argc, &argv);
-    MPI_Comm comm = lib.world()->get_impl();
+  PCMS_Library(int argc, char** argv, MPI_Comm comm) {
     int isRdv = atoi(argv[2]);
     if (isRdv) {
       const auto dim = 1;
@@ -46,10 +43,6 @@ class PCMS_Library {
     }
     else
       client = std::unique_ptr<CouplerClient>(new CouplerClient("pcms_client", comm));
-  }
-
-  ~PCMS_Library() {
-    Kokkos::finalize();
   }
 };
 
