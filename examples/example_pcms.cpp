@@ -3,19 +3,19 @@
 
 int main(int argc, char** argv)
 {
+    if (argc < 3) {
+        std::cerr << "Usage: example <source_type> <isRdv>\n"
+            << "where <source_type> is one of m3dc1, geqdsk, gpec\n" 
+            << "where <isRdv> is 0 or 1\n" << std::endl;
+        return 1;
+    }
+
     PCMS_Library lib(argc, argv);
 
     int result;
     fio_source* src;
     fio_field *pressure, *density, *magnetic_field;
     fio_option_list opt;
-
-    if(argc < 2) {
-        std::cerr << "Usage: example <source_type>\n"
-            << " where <source_type> is one of \n"
-            << " m3dc1, geqdsk, gpec" << std::endl;
-        return 1;
-    }
 
     std::string source_type(argv[1]);
     std::cerr << source_type << std::endl;
@@ -84,7 +84,6 @@ int main(int argc, char** argv)
     double phi1 = 0.;
     double x[3];
     double p, n, b[3];
-    Omega_h::HostRead<double> value;
     
     for(int i=0; i<npts; i++) {
         x[0] = R0 + (R1-R0)*i/(npts-1);
@@ -94,18 +93,18 @@ int main(int argc, char** argv)
         std::cout << "(" << x[0] << ", " << x[1] << ", " << x[2] << "):\n";
 
         if(pressure) {
-            value = pressure->evaluate(x, &p);
-            printf("\tpressure = %d\n", value[0]);
+            auto value = pressure->evaluate(x, &p);
+            printf("\tpressure = %f\n", value[0]);
         }
 
         if(density) {
-            value = density->evaluate(x, &n);
-            printf("\tdensity = %d\n", value[0]);
+            auto value = density->evaluate(x, &n);
+            printf("\tdensity = %f\n", value[0]);
         }
 
         if(magnetic_field) {
-            value = magnetic_field->evaluate(x, b);
-            printf("\tB = (%d, %d, %d):\n", value[0], value[1], value[2]);
+            auto value = magnetic_field->evaluate(x, b);
+            printf("\tB = (%f, %f, %f):\n", value[0], value[1], value[2]);
         }
     }
 

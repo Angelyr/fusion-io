@@ -28,18 +28,25 @@ namespace {
 
 class PCMS_Library {
   public:
-  MPI_Comm comm;
   pcms::CouplerClient* client;
+  Omega_h::Library lib;
 
   PCMS_Library(int argc, char** argv) {
-    MPI_Init(&argc, &argv);
-    MPI_Comm_dup(MPI_COMM_WORLD, &comm);
-    client = new pcms::CouplerClient("pcms_client", comm);
+    lib = Omega_h::Library(&argc, &argv);
+    int isRdv = atoi(argv[2]);
+    if (isRdv) {
+      const auto dim = 1;
+      auto ranks = redev::LOs({0});
+      auto cuts = redev::Reals({0});
+      auto ptn = redev::RCBPtn(dim,ranks,cuts);
+      client = new pcms::CouplerClient("pcms_client", lib.world()->get_impl(), redev::Partition{ptn});
+    }
+    else
+      client = new pcms::CouplerClient("pcms_client", lib.world()->get_impl());
   }
 
   ~PCMS_Library() {
-    MPI_Finalize();
-    delete client;
+    // delete client;
   }
 };
 
@@ -52,7 +59,7 @@ class FusionIOFieldAdapter {
     FusionIOFieldAdapter(fieldType fieldIn, int sizeX=1, int sizeY=1, int sizeZ=1) :
       field(fieldIn), 
       size{sizeX, sizeY, sizeZ} {
-      int totalSize = sizeX*sizeY*sizeZ;
+      totalSize = sizeX*sizeY*sizeZ;
       gids = std::vector<pcms::GO>(totalSize);
       std::iota(gids.begin(), gids.end(), static_cast<pcms::GO>(0));
     }
