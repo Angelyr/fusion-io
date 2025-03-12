@@ -3,6 +3,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data
 
 add_custom_target(unZip ALL
     COMMAND tar xvfz data/mars/mars_data.tar.gz -C data/mars
+    COMMAND tar xvfz data/gpec/gpec_data.tar.gz -C data/gpec
     COMMAND gunzip -c data/gato/diagnostics.dat.gz > data/gato/diagnostics.dat
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
