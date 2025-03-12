@@ -38,7 +38,7 @@ class gato_source : public fio_source {
   virtual int get_available_fields(fio_field_list*) const;
 
 #ifdef PCMS_ENABLED
-  virtual void add_pcms_fields(PCMS_Library& lib);
+  virtual void add_pcms_fields();
 #endif //PCMS_ENABLED
 };
 

@@ -8,7 +8,8 @@ pcms_source::pcms_source(const int type, const char* filename, PCMS_Library& lib
     std::cerr << "Error opening file" << std::endl;
     exit(1);
   };
-  src->add_pcms_fields(lib);
+  src->lib = &lib;
+  src->add_pcms_fields();
 }
 
 pcms_source::~pcms_source() {
