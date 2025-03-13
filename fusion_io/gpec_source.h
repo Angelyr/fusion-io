@@ -57,7 +57,7 @@ class gpec_source : public fio_source {
   int extent(double* r0, double* r1, double* z0, double* z1) const;
 
 #ifdef PCMS_ENABLED
-  void add_pcms_fields();
+  void add_pcms_data(std::string name, gpec_field_data*);
 #endif //PCMS_ENABLED
 };
 

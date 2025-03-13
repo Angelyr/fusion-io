@@ -122,6 +122,10 @@ int gpec_source::read_field_data(const char* filename, gpec_field_data* d)
 
   file.close();
 
+  #ifdef PCMS_ENABLED
+  add_pcms_data(filename, d);
+  #endif
+
   return 0;
 }
 
@@ -290,20 +294,11 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
 }
 
 #ifdef PCMS_ENABLED
-void gpec_source::add_pcms_fields() {
-  lib->client->AddField("b0_r", FusionIOFieldAdapter(b0.r, b0.nr));
-  lib->client->AddField("b0_z", FusionIOFieldAdapter(b0.z, b0.nz));
-  lib->client->AddField("b0_v_real", FusionIOFieldAdapter(b0.v_real, b0.n_comp, b0.nr, b0.nz));
-  lib->client->AddField("b0_v_imag", FusionIOFieldAdapter(b0.v_imag, b0.n_comp, b0.nr, b0.nz));
-
-  lib->client->AddField("b1_r", FusionIOFieldAdapter(b1.r, b1.nr));
-  lib->client->AddField("b1_z", FusionIOFieldAdapter(b1.z, b1.nz));
-  lib->client->AddField("b1_v_real", FusionIOFieldAdapter(b1.v_real, b1.n_comp, b1.nr, b1.nz));
-  lib->client->AddField("b1_v_imag", FusionIOFieldAdapter(b1.v_imag, b1.n_comp, b1.nr, b1.nz));
-
-  lib->client->AddField("bx_r", FusionIOFieldAdapter(bx.r, bx.nr));
-  lib->client->AddField("bx_z", FusionIOFieldAdapter(bx.z, bx.nz));
-  lib->client->AddField("bx_v_real", FusionIOFieldAdapter(bx.v_real, bx.n_comp, bx.nr, bx.nz));
-  lib->client->AddField("bx_v_imag", FusionIOFieldAdapter(bx.v_imag, bx.n_comp, bx.nr, bx.nz));
+void gpec_source::add_pcms_data(std::string name, gpec_field_data* data) {
+  if (lib == nullptr) return;
+  lib->client->AddField(name+"_r", FusionIOFieldAdapter(data->r, data->nr));
+  lib->client->AddField(name+"_z", FusionIOFieldAdapter(data->z, data->nz));
+  lib->client->AddField(name+"_v_real", FusionIOFieldAdapter(data->v_real, data->n_comp, data->nr, data->nz));
+  lib->client->AddField(name+"_v_imag", FusionIOFieldAdapter(data->v_imag, data->n_comp, data->nr, data->nz));
 }
 #endif //PCMS_ENABLED
