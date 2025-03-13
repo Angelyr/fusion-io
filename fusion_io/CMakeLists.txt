@@ -24,7 +24,6 @@ set(FUSIONIO_HEADERS
         mars_source.h
         options.h
         pcms_lib.h
-        pcms_source.h
 )
 
 add_library(fusionio_fusionio
@@ -48,7 +47,6 @@ add_library(fusionio_fusionio
         gpec_field.cpp
         fusion_io.cpp
         c_interface.cpp
-        pcms_source.cpp
         fusion_io_fortran.F90
         )
 

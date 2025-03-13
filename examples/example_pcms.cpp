@@ -1,6 +1,5 @@
 #include <fusion_io.h>
 #include "pcms_lib.h"
-#include "pcms_source.h"
 
 int main(int argc, char** argv)
 {
@@ -13,9 +12,9 @@ int main(int argc, char** argv)
 
   auto mpi = Omega_h::Library(&argc, &argv);
   PCMS_Library lib(argc, argv, mpi.world()->get_impl());
-  pcms_source source;
 
   int result;
+  fio_source *src;
   fio_field *pressure, *density, *magnetic_field;
   fio_option_list opt;
 
@@ -24,13 +23,13 @@ int main(int argc, char** argv)
 
   if(source_type == "m3dc1") {
     // Open an m3dc1 source
-    source = pcms_source(FIO_M3DC1_SOURCE, "data/m3dc1/C1.h5", lib);
+    result = fio_open_source(&src, FIO_M3DC1_SOURCE, "data/m3dc1/C1.h5", lib);
       
   } else if(source_type == "geqdsk") {
-    source = pcms_source(FIO_GEQDSK_SOURCE, "data/geqdsk/g158115.04701", lib);
+    result = fio_open_source(&src, FIO_GEQDSK_SOURCE, "data/geqdsk/g158115.04701", lib);
 
   } else if(source_type == "gpec") {
-    source = pcms_source(FIO_GPEC_SOURCE, "data/gpec", lib);
+    result = fio_open_source(&src, FIO_GPEC_SOURCE, "data/gpec", lib);
 
   } else {
     std::cerr << "Error: source type " << argv[1]
@@ -38,28 +37,33 @@ int main(int argc, char** argv)
     return 1;
   };
 
+  if(result != FIO_SUCCESS) {
+    std::cerr << "Error opening file" << std::endl;
+    exit(1);
+  };
+
   // set options for fields obtained from this source
-  source.src->get_field_options(&opt);
+  src->get_field_options(&opt);
   opt.set_option(FIO_TIMESLICE, 1);
   opt.set_option(FIO_PART, FIO_PERTURBED_ONLY);
   opt.set_option(FIO_LINEAR_SCALE, 100.);
   opt.set_option(FIO_PHASE, 180.);
 
   // open fields
-  result = source.src->get_field(FIO_MAGNETIC_FIELD, &magnetic_field, &opt);
+  result = src->get_field(FIO_MAGNETIC_FIELD, &magnetic_field, &opt);
   if(result != FIO_SUCCESS) {
     std::cerr << "Error opening magnetic field" << std::endl;
     magnetic_field = 0;
   };
 
-  result = source.src->get_field(FIO_TOTAL_PRESSURE, &pressure, &opt);
+  result = src->get_field(FIO_TOTAL_PRESSURE, &pressure, &opt);
   if(result != FIO_SUCCESS) {
     std::cerr << "Error opening pressure field" << std::endl;
     pressure = 0;
   };
 
   opt.set_option(FIO_SPECIES, FIO_ELECTRON);
-  result = source.src->get_field(FIO_DENSITY, &density, &opt);
+  result = src->get_field(FIO_DENSITY, &density, &opt);
   if(result != FIO_SUCCESS) {
     std::cerr << "Error opening density field" << std::endl;
     density = 0;
@@ -101,6 +105,7 @@ int main(int argc, char** argv)
   fio_close_field(&pressure);
   fio_close_field(&density);
   fio_close_field(&magnetic_field);
+  fio_close_source(&src);
 
   return 0;
 }
