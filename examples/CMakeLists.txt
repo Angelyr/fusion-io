@@ -23,9 +23,15 @@ target_link_libraries(example_push PRIVATE fusionio::push)
 if (FUSIONIO_ENABLE_PCMS)
     add_executable(example_pcms example_pcms.cpp)
     target_link_libraries(example_pcms PRIVATE fusionio::fusionio pcms::core)
-    # add_test(pcms_example_m3dc1 ./example_pcms m3dc1)
-    # add_test(pcms_example_geqdsk ./example_pcms geqdsk)
-    # add_test(pcms_example_gpec ./example_pcms gpec)
+    configure_file(runMultiple.sh runMultiple.sh COPYONLY)
+
+    function(add_pcms_test type)
+        add_test(pcms_example_${type} runMultiple.sh ${type})
+    endfunction()
+
+    add_pcms_test(m3dc1)
+    add_pcms_test(geqdsk)
+    add_pcms_test(gpec)
 endif()
 
 add_test(cpp_example_m3dc1 ./example m3dc1)

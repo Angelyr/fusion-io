@@ -88,17 +88,17 @@ int main(int argc, char** argv)
 
     if(pressure) {
       auto value = pressure->evaluate(x, &p);
-      printf("\tpressure = %f\n", value[0]);
+      printf("\tpressure = %.5e\n", value[0]);
     }
 
     if(density) {
       auto value = density->evaluate(x, &n);
-      printf("\tdensity = %f\n", value[0]);
+      printf("\tdensity = %.5e\n", value[0]);
     }
 
     if(magnetic_field) {
       auto value = magnetic_field->evaluate(x, b);
-      printf("\tB = (%f, %f, %f):\n", value[0], value[1], value[2]);
+      printf("\tB = (%.5e, %.5e, %.5e):\n", value[0], value[1], value[2]);
     }
   }
 
