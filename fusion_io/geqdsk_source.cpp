@@ -248,10 +248,10 @@ int geqdsk_source::interpolate_psi(const double r0, const double z0,
 
 #ifdef PCMS_ENABLED
 void geqdsk_source::add_pcms_fields() {
-  lib->client->AddField("psi", FusionIOFieldAdapter(psi, nw));
-  lib->client->AddField("psirz", FusionIOFieldAdapter(psirz, nh, nw));
-  lib->client->AddField("fpol", FusionIOFieldAdapter(fpol, nw));
-  lib->client->AddField("ffprime", FusionIOFieldAdapter(ffprime, nw));
-  lib->client->AddField("press", FusionIOFieldAdapter(press, nw));
+  lib->app->AddField("psi", FusionIOFieldAdapter(psi, nw));
+  lib->app->AddField("psirz", FusionIOFieldAdapter(psirz, nh, nw));
+  lib->app->AddField("fpol", FusionIOFieldAdapter(fpol, nw));
+  lib->app->AddField("ffprime", FusionIOFieldAdapter(ffprime, nw));
+  lib->app->AddField("press", FusionIOFieldAdapter(press, nw));
 }
 #endif //PCMS_ENABLED

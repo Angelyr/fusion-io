@@ -296,9 +296,9 @@ int gpec_source::gpec_field_data::interpolate(const double r0, const double z0,
 #ifdef PCMS_ENABLED
 void gpec_source::add_pcms_data(std::string name, gpec_field_data* data) {
   if (lib == nullptr) return;
-  lib->client->AddField(name+"_r", FusionIOFieldAdapter(data->r, data->nr));
-  lib->client->AddField(name+"_z", FusionIOFieldAdapter(data->z, data->nz));
-  lib->client->AddField(name+"_v_real", FusionIOFieldAdapter(data->v_real, data->n_comp, data->nr, data->nz));
-  lib->client->AddField(name+"_v_imag", FusionIOFieldAdapter(data->v_imag, data->n_comp, data->nr, data->nz));
+  lib->app->AddField(name+"_r", FusionIOFieldAdapter(data->r, data->nr));
+  lib->app->AddField(name+"_z", FusionIOFieldAdapter(data->z, data->nz));
+  lib->app->AddField(name+"_v_real", FusionIOFieldAdapter(data->v_real, data->n_comp, data->nr, data->nz));
+  lib->app->AddField(name+"_v_imag", FusionIOFieldAdapter(data->v_imag, data->n_comp, data->nr, data->nz));
 }
 #endif //PCMS_ENABLED

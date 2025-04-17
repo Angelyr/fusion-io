@@ -3,12 +3,14 @@
 #ifndef PCMS_LIB_H
 #define PCMS_LIB_H
 
-#include <pcms/server.h>
-#include <pcms/client.h>
+#include <pcms/coupler.h>
 #include <pcms/field.h>
 #include <pcms/types.h>
+#include <Omega_h_library.hpp>
+#include <Omega_h_array_ops.hpp>
+#include <Omega_h_comm.hpp>
 
-using pcms::CouplerClient;
+using pcms::Coupler;
 
 namespace {
   template<typename T>
@@ -30,19 +32,17 @@ namespace {
 
 class PCMS_Library {
   public:
-  std::unique_ptr<CouplerClient> client;
+  std::unique_ptr<Coupler> coupler;
+  pcms::Application* app;
 
   PCMS_Library(int argc, char** argv, MPI_Comm comm) {
-    int isRdv = atoi(argv[2]);
-    if (isRdv) {
-      const auto dim = 1;
-      auto ranks = redev::LOs({0});
-      auto cuts = redev::Reals({0});
-      auto ptn = redev::Partition{redev::RCBPtn(dim,ranks,cuts)};
-      client = std::unique_ptr<CouplerClient>(new CouplerClient("pcms_client", comm, ptn));
-    }
-    else
-      client = std::unique_ptr<CouplerClient>(new CouplerClient("pcms_client", comm));
+    int isServer = atoi(argv[2]);
+    const auto dim = 1;
+    auto ranks = redev::LOs({0});
+    auto cuts = redev::Reals({0});
+    auto ptn = redev::Partition{redev::RCBPtn(dim,ranks,cuts)};
+    coupler = std::unique_ptr<Coupler>(new Coupler("pcms_coupler", comm, isServer, ptn));
+    app = coupler->AddApplication("pcms_app");
   }
 };
 
