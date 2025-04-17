@@ -68,6 +68,7 @@ endif()
 target_compile_definitions(fusionio_fusionio PRIVATE
         $<$<COMPILE_LANGUAGE:Fortran>: FORTRAN>)
 add_library(fusionio::fusionio ALIAS fusionio_fusionio)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/fusion_io.mod TYPE INCLUDE)
 
 
 add_library(fusionio_push push_interface.f90)
@@ -79,6 +80,7 @@ target_include_directories(fusionio_push PUBLIC $<BUILD_INTERFACE:${CMAKE_CURREN
 target_compile_definitions(fusionio_push PRIVATE
         $<$<COMPILE_LANGUAGE:Fortran>: FORTRAN>)
 add_library(fusionio::push ALIAS fusionio_push)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/fio_push.mod TYPE INCLUDE)
 
 
 if (FUSIONIO_ENABLE_PYTHON)
@@ -91,6 +93,11 @@ if (FUSIONIO_ENABLE_PYTHON)
         set_target_properties(fio_py PROPERTIES PREFIX "" SUFFIX ".so")
 
         install(FILES fpy.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+        if(DEFINED PYTHON_MODULE_INSTALL_PATH)
+                install(FILES fpy.py DESTINATION ${PYTHON_MODULE_INSTALL_PATH})
+                install(TARGETS fio_py DESTINATION ${PYTHON_MODULE_INSTALL_PATH})
+        endif()
 endif()
 
 install(TARGETS fusionio_fusionio 
